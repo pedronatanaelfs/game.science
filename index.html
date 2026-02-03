@@ -1,0 +1,887 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="description" content="Game analytics portfolio: retention, progression funnels, player segmentation, live ops monitoring, and anomaly detection." />
+  <title>Game Analytics Portfolio — Your Name</title>
+
+  <style>
+    :root{
+      --bg: #0b0f19;
+      --panel: rgba(255,255,255,.06);
+      --panel2: rgba(255,255,255,.09);
+      --text: rgba(255,255,255,.92);
+      --muted: rgba(255,255,255,.70);
+      --muted2: rgba(255,255,255,.55);
+      --border: rgba(255,255,255,.10);
+      --accent: #7c5cff;
+      --accent2: #28d7a3;
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
+      --radius: 18px;
+      --max: 1120px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      --sans: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+
+    *{ box-sizing:border-box; }
+    html,body{ height:100%; }
+    body{
+      margin:0;
+      font-family: var(--sans);
+      color: var(--text);
+      background:
+        radial-gradient(1200px 700px at 10% 10%, rgba(124,92,255,.25), transparent 55%),
+        radial-gradient(1000px 650px at 90% 20%, rgba(40,215,163,.18), transparent 55%),
+        radial-gradient(900px 550px at 50% 100%, rgba(255,255,255,.06), transparent 60%),
+        var(--bg);
+      line-height: 1.45;
+    }
+
+    a{ color: inherit; text-decoration: none; }
+    a:hover{ text-decoration: underline; }
+    .container{ max-width: var(--max); margin:0 auto; padding: 0 20px; }
+
+    /* Top nav */
+    header{
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      backdrop-filter: blur(12px);
+      background: rgba(11,15,25,.65);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav{
+      display:flex;
+      align-items:center;
+      justify-content:space-between;
+      padding: 14px 0;
+      gap: 16px;
+    }
+    .brand{
+      display:flex;
+      align-items:center;
+      gap: 10px;
+      min-width: 180px;
+    }
+    .logo{
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      background:
+        radial-gradient(circle at 30% 30%, rgba(255,255,255,.30), transparent 45%),
+        linear-gradient(135deg, var(--accent), rgba(40,215,163,.55));
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,.16);
+    }
+    .brand b{ font-size: 14.5px; letter-spacing:.3px; }
+    .brand span{ display:block; font-size:12px; color:var(--muted2); margin-top:2px; }
+
+    nav{
+      display:flex;
+      gap: 14px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    nav a{
+      font-size: 13px;
+      color: var(--muted);
+      padding: 8px 10px;
+      border-radius: 10px;
+      border: 1px solid transparent;
+    }
+    nav a:hover{
+      color: var(--text);
+      border-color: var(--border);
+      background: rgba(255,255,255,.04);
+      text-decoration:none;
+    }
+
+    .nav-actions{
+      display:flex;
+      gap: 10px;
+      min-width: 180px;
+      justify-content: flex-end;
+    }
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap: 8px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.04);
+      color: var(--text);
+      font-size: 13px;
+      cursor:pointer;
+      box-shadow: none;
+      transition: transform .08s ease, background .15s ease, border-color .15s ease;
+      user-select:none;
+    }
+    .btn:hover{
+      background: rgba(255,255,255,.07);
+      border-color: rgba(255,255,255,.18);
+      text-decoration:none;
+    }
+    .btn:active{ transform: translateY(1px); }
+    .btn.primary{
+      background: linear-gradient(135deg, rgba(124,92,255,.95), rgba(40,215,163,.65));
+      border-color: rgba(255,255,255,.22);
+    }
+
+    /* Sections */
+    section{ padding: 70px 0; }
+    .section-head{
+      display:flex;
+      align-items:flex-end;
+      justify-content:space-between;
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+    h2{
+      margin:0;
+      font-size: 22px;
+      letter-spacing:.2px;
+    }
+    .section-head p{
+      margin:0;
+      color: var(--muted);
+      max-width: 650px;
+      font-size: 14px;
+    }
+
+    /* Hero */
+    .hero{
+      padding: 64px 0 42px;
+    }
+    .hero-grid{
+      display:grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 22px;
+      align-items: stretch;
+    }
+    .hero-card{
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.04);
+      box-shadow: var(--shadow);
+      padding: 26px;
+      overflow:hidden;
+      position:relative;
+      min-height: 310px;
+    }
+    .hero-card:before{
+      content:"";
+      position:absolute;
+      inset: -140px -140px auto auto;
+      width: 260px;
+      height: 260px;
+      background: radial-gradient(circle, rgba(124,92,255,.30), transparent 60%);
+      transform: rotate(12deg);
+      pointer-events:none;
+    }
+    .kicker{
+      font-family: var(--mono);
+      color: rgba(255,255,255,.75);
+      font-size: 12px;
+      letter-spacing:.35px;
+    }
+    h1{
+      margin: 10px 0 10px;
+      font-size: 38px;
+      line-height: 1.08;
+      letter-spacing: .2px;
+    }
+    .lead{
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      max-width: 64ch;
+    }
+    .hero-ctas{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .chiprow{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      margin-top: 18px;
+    }
+    .chip{
+      font-family: var(--mono);
+      font-size: 12px;
+      padding: 8px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      color: rgba(255,255,255,.78);
+      white-space: nowrap;
+    }
+
+    /* Highlight panel (right hero) */
+    .hero-side{
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      padding: 18px;
+      display:flex;
+      flex-direction: column;
+      gap: 12px;
+      min-height: 310px;
+    }
+    .mini{
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: rgba(255,255,255,.04);
+      padding: 14px;
+    }
+    .mini b{ font-size: 13px; }
+    .mini p{ margin: 6px 0 0; color: var(--muted); font-size: 13px; }
+    .mini .meta{
+      margin-top: 10px;
+      display:flex;
+      gap: 8px;
+      flex-wrap:wrap;
+      color: rgba(255,255,255,.70);
+      font-family: var(--mono);
+      font-size: 11.5px;
+    }
+
+    /* Cards / grids */
+    .grid{
+      display:grid;
+      gap: 14px;
+    }
+    .grid.cols-3{ grid-template-columns: repeat(3, minmax(0,1fr)); }
+    .grid.cols-2{ grid-template-columns: repeat(2, minmax(0,1fr)); }
+
+    .card{
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      background: rgba(255,255,255,.04);
+      padding: 18px;
+      box-shadow: none;
+      transition: transform .10s ease, background .15s ease, border-color .15s ease;
+    }
+    .card:hover{
+      transform: translateY(-2px);
+      background: rgba(255,255,255,.055);
+      border-color: rgba(255,255,255,.18);
+    }
+    .card h3{
+      margin: 0;
+      font-size: 16px;
+      letter-spacing:.2px;
+    }
+    .card p{
+      margin: 8px 0 0;
+      color: var(--muted);
+      font-size: 13.5px;
+    }
+    .card ul{
+      margin: 10px 0 0;
+      padding-left: 18px;
+      color: rgba(255,255,255,.80);
+      font-size: 13px;
+    }
+    .card li{ margin: 6px 0; }
+    .pill{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      font-family: var(--mono);
+      font-size: 11.5px;
+      color: rgba(255,255,255,.76);
+      margin-top: 12px;
+    }
+
+    /* Case studies */
+    .case{
+      display:flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .case-top{
+      display:flex;
+      align-items:flex-start;
+      justify-content:space-between;
+      gap: 10px;
+    }
+    .case .tags{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 8px;
+      margin-top: 10px;
+    }
+    .tag{
+      font-family: var(--mono);
+      font-size: 11.5px;
+      padding: 6px 10px;
+      border-radius: 999px;
+      background: rgba(124,92,255,.16);
+      border: 1px solid rgba(124,92,255,.30);
+      color: rgba(255,255,255,.82);
+    }
+    .tag.green{
+      background: rgba(40,215,163,.12);
+      border-color: rgba(40,215,163,.28);
+    }
+    .links{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .linkbtn{
+      display:inline-flex;
+      align-items:center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 12px;
+      border: 1px solid var(--border);
+      background: rgba(255,255,255,.03);
+      font-size: 12.5px;
+      color: rgba(255,255,255,.88);
+    }
+
+    /* Tooling list */
+    .stack{
+      display:flex;
+      flex-wrap:wrap;
+      gap: 10px;
+      margin-top: 8px;
+    }
+
+    /* Footer / contact */
+    footer{
+      border-top: 1px solid var(--border);
+      background: rgba(0,0,0,.15);
+      padding: 28px 0;
+    }
+    .footer-grid{
+      display:grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 18px;
+      align-items:flex-start;
+    }
+    .small{
+      color: var(--muted2);
+      font-size: 12.5px;
+      margin-top: 8px;
+    }
+
+    /* Utilities */
+    .muted{ color: var(--muted); }
+    .divider{
+      height: 1px;
+      background: var(--border);
+      margin: 18px 0;
+    }
+
+    /* Responsive */
+    @media (max-width: 980px){
+      .hero-grid{ grid-template-columns: 1fr; }
+      .grid.cols-3{ grid-template-columns: 1fr; }
+      .grid.cols-2{ grid-template-columns: 1fr; }
+      .footer-grid{ grid-template-columns: 1fr; }
+      h1{ font-size: 32px; }
+      nav{ display:none; }
+      .nav-actions{ min-width:auto; }
+      .brand{ min-width:auto; }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container">
+      <div class="nav">
+        <div class="brand">
+          <div class="logo" aria-hidden="true"></div>
+          <div>
+            <b>Your Name</b>
+            <span>Game Analytics • Data Science</span>
+          </div>
+        </div>
+
+        <nav aria-label="Site navigation">
+          <a href="#solutions">Solutions</a>
+          <a href="#case-studies">Case Studies</a>
+          <a href="#demos">Demos</a>
+          <a href="#stack">Stack</a>
+          <a href="#about">About</a>
+          <a href="#contact">Contact</a>
+        </nav>
+
+        <div class="nav-actions">
+          <a class="btn" href="https://github.com/your-username" target="_blank" rel="noreferrer">GitHub</a>
+          <a class="btn primary" href="#contact">Hire / Collaborate</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- HERO -->
+    <section class="hero">
+      <div class="container">
+        <div class="hero-grid">
+          <div class="hero-card">
+            <div class="kicker">Telemetry → Insights → Product Decisions</div>
+            <h1>Game analytics that turns raw events into clear actions.</h1>
+            <p class="lead">
+              I build data-driven solutions for game studios—focused on retention, progression funnels,
+              segmentation, live ops monitoring, and integrity signals. Portfolio prototypes are designed
+              to be studio-ready and reusable as product modules.
+            </p>
+
+            <div class="hero-ctas">
+              <a class="btn primary" href="#solutions">Explore Solutions</a>
+              <a class="btn" href="#case-studies">View Case Studies</a>
+              <a class="btn" href="#demos">Open Demos</a>
+            </div>
+
+            <div class="chiprow" aria-label="Highlights">
+              <div class="chip">Retention (D1/D7/D30)</div>
+              <div class="chip">Progression funnels</div>
+              <div class="chip">Player personas</div>
+              <div class="chip">Patch impact</div>
+              <div class="chip">Anomaly signals</div>
+            </div>
+          </div>
+
+          <aside class="hero-side" aria-label="What I deliver">
+            <div class="mini">
+              <b>Retention & Cohort Intelligence</b>
+              <p>Find where players churn, measure patch impact, and monitor cohort health with studio-grade metrics.</p>
+              <div class="meta">
+                <span>cohorts</span><span>•</span><span>curves</span><span>•</span><span>alerts</span>
+              </div>
+            </div>
+
+            <div class="mini">
+              <b>Progression Drop-off Diagnosis</b>
+              <p>Identify difficulty spikes and level bottlenecks using funnel + frustration signals (deaths, retries, time stuck).</p>
+              <div class="meta">
+                <span>funnels</span><span>•</span><span>hotspots</span><span>•</span><span>recommendations</span>
+              </div>
+            </div>
+
+            <div class="mini">
+              <b>Behavior Segmentation & Integrity Signals</b>
+              <p>Cluster playstyles into personas and generate explainable risk signals for suspicious behavior in online modes.</p>
+              <div class="meta">
+                <span>clustering</span><span>•</span><span>explainability</span><span>•</span><span>risk scoring</span>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <!-- SOLUTIONS -->
+    <section id="solutions">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Solutions</h2>
+            <p>
+              These are the most studio-relevant game analytics deliverables—built as portfolio-grade prototypes
+              that can evolve into production modules.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid cols-3">
+          <div class="card">
+            <h3>A) Retention & Cohort Intelligence</h3>
+            <p>Measure player health over time (D1/D7/D30), cohort comparisons, and churn risk signals.</p>
+            <ul>
+              <li>Cohort dashboards + retention curves</li>
+              <li>Churn prediction (interpretable baselines)</li>
+              <li>Automated alerts after patches/events</li>
+            </ul>
+            <div class="pill">Best for: product & live ops</div>
+          </div>
+
+          <div class="card">
+            <h3>B) Level Funnel & Drop-off Diagnosis</h3>
+            <p>Identify where players quit and why using progression funnels and frustration proxies.</p>
+            <ul>
+              <li>Level progression funnel (tutorial → endgame)</li>
+              <li>Difficulty spikes (deaths/retries/time stuck)</li>
+              <li>Action list: what to fix next</li>
+            </ul>
+            <div class="pill">Best for: design & balancing</div>
+          </div>
+
+          <div class="card">
+            <h3>C) Telemetry Pipeline & Data QA</h3>
+            <p>Turn raw events into analytics-ready tables with sessionization, feature engineering, and QA checks.</p>
+            <ul>
+              <li>Event schema + data contracts</li>
+              <li>Session reconstruction (playtime, sessions)</li>
+              <li>QA: missing events, outliers, drift</li>
+            </ul>
+            <div class="pill">Best for: reliable metrics</div>
+          </div>
+
+          <div class="card">
+            <h3>D) Player Personas (Clustering + Explainability)</h3>
+            <p>Segment players into interpretable profiles to tailor onboarding, pacing, and content.</p>
+            <ul>
+              <li>Clustering + persona cards</li>
+              <li>Segment retention and churn risk</li>
+              <li>Explainability to guide actions</li>
+            </ul>
+            <div class="pill">Best for: personalization</div>
+          </div>
+
+          <div class="card">
+            <h3>E) Live Ops Monitoring & Patch Impact</h3>
+            <p>Operational monitoring for DAU/WAU/MAU, engagement, progression stability, and impact analysis.</p>
+            <ul>
+              <li>KPI dashboard + anomaly alerts</li>
+              <li>Pre/post patch cohort comparison</li>
+              <li>Guardrails to prevent regressions</li>
+            </ul>
+            <div class="pill">Best for: live games</div>
+          </div>
+
+          <div class="card">
+            <h3>F) Integrity Signals (Anomaly / Suspicious Behavior)</h3>
+            <p>Generate explainable risk scores for investigation triage (cheating/bots/economy exploits).</p>
+            <ul>
+              <li>Risk scoring + explainable flags</li>
+              <li>Outlier detection (lightweight ML)</li>
+              <li>Investigation dashboard prototype</li>
+            </ul>
+            <div class="pill">Best for: multiplayer moderation</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CASE STUDIES -->
+    <section id="case-studies">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Case Studies</h2>
+            <p>
+              Each case study is structured like a studio deliverable: context → data → method → outputs → actions.
+              Replace the placeholder links with your repos/demos/PDFs as you build.
+            </p>
+          </div>
+        </div>
+
+        <div class="grid cols-2">
+          <div class="card case">
+            <div class="case-top">
+              <div>
+                <h3>01 — Progression Drop-off: “Why Players Quit After Level 4”</h3>
+                <p class="muted">
+                  Funnel + frustration signals identify churn hotspots and produce a prioritized fix list
+                  (checkpoint placement, tutorial hints, tuning).
+                </p>
+              </div>
+            </div>
+            <div class="tags">
+              <span class="tag">funnels</span>
+              <span class="tag">drop-off</span>
+              <span class="tag green">actionable insights</span>
+            </div>
+            <div class="links">
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">Dashboard Demo</a>
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">GitHub Repo</a>
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">PDF Report</a>
+            </div>
+          </div>
+
+          <div class="card case">
+            <div class="case-top">
+              <div>
+                <h3>02 — Player Personas: “Explorers vs Speedrunners”</h3>
+                <p class="muted">
+                  Clustering + profiling turns behavioral features into interpretable personas with segment-level
+                  retention and churn risk.
+                </p>
+              </div>
+            </div>
+            <div class="tags">
+              <span class="tag">clustering</span>
+              <span class="tag">personas</span>
+              <span class="tag green">explainability</span>
+            </div>
+            <div class="links">
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">Persona Explorer</a>
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">GitHub Repo</a>
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">Notebook</a>
+            </div>
+          </div>
+
+          <div class="card case">
+            <div class="case-top">
+              <div>
+                <h3>03 — Live Ops: Patch Impact Monitor</h3>
+                <p class="muted">
+                  Pre/post patch cohorts + KPI anomaly detection to spot regressions in retention, engagement,
+                  and progression stability.
+                </p>
+              </div>
+            </div>
+            <div class="tags">
+              <span class="tag">live ops</span>
+              <span class="tag">patch impact</span>
+              <span class="tag green">alerts</span>
+            </div>
+            <div class="links">
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">Dashboard Demo</a>
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">Template Repo</a>
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">Write-up</a>
+            </div>
+          </div>
+
+          <div class="card case">
+            <div class="case-top">
+              <div>
+                <h3>04 — Integrity Signals: Suspicious Behavior Triage</h3>
+                <p class="muted">
+                  Lightweight anomaly detection + interpretable flags (e.g., impossible progression speed,
+                  abnormal accuracy) for investigation workflows.
+                </p>
+              </div>
+            </div>
+            <div class="tags">
+              <span class="tag">anomaly</span>
+              <span class="tag">risk scoring</span>
+              <span class="tag green">investigation</span>
+            </div>
+            <div class="links">
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">Risk Board Demo</a>
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">GitHub Repo</a>
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">Method Notes</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+
+        <p class="muted" style="margin:0;">
+          Tip: for each case, include <span style="font-family:var(--mono);">1 dashboard screenshot/GIF</span> and a short
+          <span style="font-family:var(--mono);">1–2 page PDF</span> with conclusions. That makes this page feel like a product.
+        </p>
+      </div>
+    </section>
+
+    <!-- DEMOS -->
+    <section id="demos">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Demos</h2>
+            <p>Interactive prototypes (Streamlit/FastAPI) that mirror studio workflows. Replace links as you publish each demo.</p>
+          </div>
+        </div>
+
+        <div class="grid cols-3">
+          <div class="card">
+            <h3>Retention Dashboard</h3>
+            <p>Cohorts, curves, churn risk signals, and patch comparisons.</p>
+            <div class="links">
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">Open Demo</a>
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">Repo</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Persona Explorer</h3>
+            <p>Inspect player segments and how they differ in behavior and retention.</p>
+            <div class="links">
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">Open Demo</a>
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">Repo</a>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Risk Signals Board</h3>
+            <p>Rank suspicious accounts and show explainable flags for triage.</p>
+            <div class="links">
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">Open Demo</a>
+              <a class="linkbtn" href="#" target="_blank" rel="noreferrer">Repo</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- STACK -->
+    <section id="stack">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Stack & Principles</h2>
+            <p>Designed for reproducibility, interpretability, and studio-ready outputs.</p>
+          </div>
+        </div>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>Tooling</h3>
+            <p>Lightweight, practical choices to ship dashboards and reports quickly.</p>
+            <div class="stack">
+              <span class="chip">Python</span>
+              <span class="chip">Pandas / Polars</span>
+              <span class="chip">scikit-learn</span>
+              <span class="chip">Plotly / Altair</span>
+              <span class="chip">Streamlit</span>
+              <span class="chip">FastAPI (optional)</span>
+              <span class="chip">SQLite / Postgres</span>
+              <span class="chip">Docker (optional)</span>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Principles</h3>
+            <ul>
+              <li><b>Metric clarity:</b> studio-grade definitions for retention, funnels, cohorts.</li>
+              <li><b>Reproducibility:</b> deterministic pipelines and documented assumptions.</li>
+              <li><b>Interpretability:</b> explainable outputs that lead to concrete actions.</li>
+              <li><b>Telemetry QA:</b> checks for missing events, anomalies, drift.</li>
+              <li><b>Product thinking:</b> prototypes structured as reusable modules.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>About</h2>
+            <p>A short, recruiter-friendly summary that keeps your retail background open while highlighting game analytics.</p>
+          </div>
+        </div>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>Who I am</h3>
+            <p>
+              I’m a Data Scientist with experience building decision-driven analytics in industry contexts.
+              I’m expanding into game analytics by developing telemetry pipelines, retention diagnostics,
+              player segmentation, and integrity signals—focused on outputs that support product, design, and live ops decisions.
+            </p>
+            <p class="muted" style="margin-top:10px;">
+              I keep my main GitHub focused on general/retail DS for broad employability, and this page highlights game-specific solutions.
+            </p>
+          </div>
+
+          <div class="card">
+            <h3>What I’m looking for</h3>
+            <ul>
+              <li>Freelance or part-time analytics work with indie/mid studios</li>
+              <li>Game analytics roles (product analytics, live ops analytics)</li>
+              <li>Collaboration to evolve one module into a SaaS</li>
+            </ul>
+            <div class="pill">Open to: remote • hybrid • consulting</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="container">
+        <div class="section-head">
+          <div>
+            <h2>Contact</h2>
+            <p>Want to talk about retention issues, funnels, or building a lightweight analytics layer? Reach out.</p>
+          </div>
+        </div>
+
+        <div class="grid cols-2">
+          <div class="card">
+            <h3>Links</h3>
+            <ul>
+              <li>Email: <a href="mailto:you@example.com">you@example.com</a></li>
+              <li>LinkedIn: <a href="https://linkedin.com/in/your-handle" target="_blank" rel="noreferrer">linkedin.com/in/your-handle</a></li>
+              <li>GitHub: <a href="https://github.com/your-username" target="_blank" rel="noreferrer">github.com/your-username</a></li>
+              <li>Resume (PDF): <a href="#" target="_blank" rel="noreferrer">download</a></li>
+            </ul>
+            <p class="small">Replace the placeholders with your real links. You can host your resume as <span style="font-family:var(--mono);">/assets/resume.pdf</span>.</p>
+          </div>
+
+          <div class="card">
+            <h3>Quick message</h3>
+            <p class="muted" style="margin-top:0;">
+              (Optional) If you later add a form, keep it short: studio size, game type, and the biggest analytics question.
+            </p>
+            <div class="divider"></div>
+            <p style="margin:0;"><b>Suggested prompt to send me:</b></p>
+            <p class="muted" style="margin-top:8px;">
+              “We’re seeing churn after early levels. We have raw events (start/end, deaths, quits). Can you help diagnose drop-off points and propose actions?”
+            </p>
+            <a class="btn primary" href="mailto:you@example.com?subject=Game%20Analytics%20Inquiry&body=Hi%20%5Byour%20name%5D%2C%0A%0AWe%20want%20help%20with%20game%20analytics%20(%20retention%20%2F%20funnels%20%2F%20segmentation%20).%0A%0AContext%3A%20%0AData%20available%3A%20%0AGoal%3A%20%0A%0AThanks!" style="margin-top:12px;">Email me</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="brand" style="padding:0; margin:0;">
+            <div class="logo" aria-hidden="true"></div>
+            <div>
+              <b>Your Name</b>
+              <span>Game Analytics • Data Science</span>
+            </div>
+          </div>
+          <div class="small">
+            © <span id="year"></span> • Built with GitHub Pages • Portfolio prototypes designed for real studio decisions.
+          </div>
+        </div>
+        <div class="small" style="text-align:right;">
+          <a href="#solutions">Solutions</a> ·
+          <a href="#case-studies">Case Studies</a> ·
+          <a href="#demos">Demos</a> ·
+          <a href="#about">About</a> ·
+          <a href="#contact">Contact</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Smooth scroll for internal anchors (nice UX)
+    document.querySelectorAll('a[href^="#"]').forEach(a => {
+      a.addEventListener('click', (e) => {
+        const id = a.getAttribute('href');
+        if (!id || id === '#') return;
+        const el = document.querySelector(id);
+        if (!el) return;
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        history.pushState(null, '', id);
+      });
+    });
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
